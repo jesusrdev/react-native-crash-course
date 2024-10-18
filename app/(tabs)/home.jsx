@@ -1,4 +1,10 @@
-import { View, Text, FlatList, Image, RefreshControl } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  RefreshControl,
+} from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -6,26 +12,29 @@ import { images } from "../../constants";
 import SearchInput from "../../components/SearchInput";
 import Trending from "../../components/Trending";
 import EmptyState from "../../components/EmptyState";
+import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
+import useAppwrite from "../../lib/useAppwrite";
+import VideoCard from "../../components/VideoCard";
 
 const Home = () => {
+  const { data: posts, refetch } = useAppwrite(getAllPosts);
+  const { data: latestPosts } = useAppwrite(getLatestPosts);
+
   const [refreshin, setRefreshin] = useState(false);
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshin(true);
 
-    // re call videos => if any new videos appear
+    await refetch();
     setRefreshin(false);
   };
 
   return (
     <SafeAreaView className="h-full bg-primary">
       <FlatList
-        data={[{ id: 1 }, { id: 2 }, { id: 3 }]}
-        // data={[]}
+        data={posts}
         keyExtractor={(item) => item.$id}
-        renderItem={({ item }) => (
-          <Text className="text-3xl text-white">{item.id}</Text>
-        )}
+        renderItem={({ item }) => <VideoCard video={item} />}
         ListHeaderComponent={() => (
           <View className="px-4 my-6 space-y-6">
             <View className="flex-row items-start justify-between mb-6">
@@ -54,7 +63,7 @@ const Home = () => {
                 Lates Videos
               </Text>
 
-              <Trending posts={[{ id: 1 }, { id: 2 }, { id: 3 }] ?? []} />
+              <Trending posts={latestPosts ?? []} />
             </View>
           </View>
         )}
