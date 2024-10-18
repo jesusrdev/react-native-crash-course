@@ -4,6 +4,7 @@ import { useFonts } from "expo-font";
 import { useEffect } from "react";
 
 import GlobalProvider from "../context/GlobalProvider";
+import "../global.css";
 
 SplashScreen.preventAutoHideAsync();
 
