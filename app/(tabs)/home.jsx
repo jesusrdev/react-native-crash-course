@@ -20,13 +20,13 @@ const Home = () => {
   const { data: posts, refetch } = useAppwrite(getAllPosts);
   const { data: latestPosts } = useAppwrite(getLatestPosts);
 
-  const [refreshin, setRefreshin] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = async () => {
-    setRefreshin(true);
+    setRefreshing(true);
 
     await refetch();
-    setRefreshin(false);
+    setRefreshing(false);
   };
 
   return (
@@ -74,7 +74,7 @@ const Home = () => {
           />
         )}
         refreshControl={
-          <RefreshControl refreshing={refreshin} onRefresh={onRefresh} />
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       />
     </SafeAreaView>
