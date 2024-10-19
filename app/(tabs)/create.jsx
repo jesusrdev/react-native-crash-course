@@ -6,7 +6,7 @@ import { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { ResizeMode, Video } from "expo-av";
 import { icons } from "../../constants";
-import * as DocumentPicker from "expo-document-picker";
+import * as ImagePicker from "expo-image-picker";
 
 import CustomButton from "../../components/CustomButton";
 import { router } from "expo-router";
@@ -25,11 +25,13 @@ const Create = () => {
   });
 
   const openPicker = async (selectType) => {
-    const result = await DocumentPicker.getDocumentAsync({
-      type:
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes:
         selectType === "image"
-          ? ["image/jpg", "image/png", "image/jpeg"]
-          : ["video/mp4", "video/gif"],
+          ? ImagePicker.MediaTypeOptions.Images
+          : ImagePicker.MediaTypeOptions.Videos,
+      aspect: [4, 3],
+      quality: 1,
     });
 
     if (!result.canceled) {
@@ -151,7 +153,7 @@ const Create = () => {
         />
 
         <CustomButton
-          title="Subtmit & Publish"
+          title="Submit & Publish"
           handlePress={submit}
           containerStyles={`mt-7`}
           isLoading={uploading}
