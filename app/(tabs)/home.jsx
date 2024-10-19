@@ -15,8 +15,10 @@ import EmptyState from "../../components/EmptyState";
 import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
 import useAppwrite from "../../lib/useAppwrite";
 import VideoCard from "../../components/VideoCard";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const Home = () => {
+  const { user } = useGlobalContext();
   const { data: posts, refetch } = useAppwrite(getAllPosts);
   const { data: latestPosts } = useAppwrite(getLatestPosts);
 
@@ -43,7 +45,7 @@ const Home = () => {
                   Welcome Back
                 </Text>
                 <Text className="text-2xl text-white font-psemibold">
-                  imyisus
+                  {user?.username}
                 </Text>
               </View>
 
@@ -74,7 +76,7 @@ const Home = () => {
           />
         )}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="white" />
         }
       />
     </SafeAreaView>
