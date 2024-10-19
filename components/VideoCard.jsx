@@ -2,20 +2,16 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { icons } from "../constants";
 import { ResizeMode, Video } from "expo-av";
+import PopupOptions from "./PopupOptions";
 
-const VideoCard = ({
-  video: {
-    title,
-    thumbnail,
-    video,
-    creator: { username, avatar },
-  },
-}) => {
+const VideoCard = ({ video }) => {
+  const { title, thumbnail, video: videoUrl, creator: { username, avatar } } = video;
+  
   const [play, setPlay] = useState(false);
 
   return (
     <View className="flex-col items-center px-4 mb-14">
-      <View className="flex-row items-start gap-3">
+      <View className="z-50 flex-row items-start gap-3">
         <View className="flex-row items-center justify-center flex-1">
           <View className="w-[46px] h-[46px] rounded-lg border-secondary border items-center justify-center p-0.5">
             <Image
@@ -42,14 +38,14 @@ const VideoCard = ({
           </View>
         </View>
 
-        <View className="pt-2">
-          <Image source={icons.menu} className="w-5 h-5" resizeMode="contain" />
+        <View className="pt-2 ">
+          <PopupOptions video={video} />
         </View>
       </View>
 
       {play ? (
         <Video
-          source={{ uri: video }}
+          source={{ uri: videoUrl }}
           className="w-full mt-3 bg-white/10 h-60 rounded-xl"
           resizeMode={ResizeMode.CONTAIN}
           useNativeControls
@@ -64,7 +60,7 @@ const VideoCard = ({
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => setPlay(true)}
-          className="relative items-center justify-center w-full mt-3 h-60 rounded-xl"
+          className="relative z-0 items-center justify-center w-full mt-3 h-60 rounded-xl"
         >
           <Image
             source={{ uri: thumbnail }}
